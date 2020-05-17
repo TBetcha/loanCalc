@@ -1,9 +1,20 @@
 /** @format */
 //listen for submit
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function (e) {
+	//hide results
+	document.getElementById('results').style.display = 'none';
+
+	//show loader
+	document.getElementById('loading').style.display = 'block';
+
+	setTimeout(calculateResults, 2000);
+
+	//moved this up from below to handle loader portion
+	e.preventDefault();
+});
 
 //calc results
-function calculateResults(e) {
+function calculateResults() {
 	console.log('Calculating...');
 
 	//UI vars
@@ -30,17 +41,30 @@ function calculateResults(e) {
 		monthlyPayment.value = monthly.toFixed(2);
 		totalPayment.value = (monthly * calculatedPayments).toFixed(2);
 		totalInterest.value = (monthly * calculatedPayments - principal).toFixed(2);
+
+		//show results
+		document.getElementById('results').style.display = 'block';
+
+		//hide loader
+		document.getElementById('loading').style.display = 'none';
 	} else {
 		//if not finite somehting went wrong
 		showError('Please check your numbers');
 	}
 
 	//since its a form we want to do this
-	e.preventDefault();
+	//changed to remove this after adding loading portion
+	//e.preventDefault();
 }
 
 //show error
 function showError(error) {
+	//show results
+	document.getElementById('results').style.display = 'none';
+
+	//hide loader
+	document.getElementById('loading').style.display = 'none';
+
 	//create a div
 	const errorDiv = document.createElement('div');
 
